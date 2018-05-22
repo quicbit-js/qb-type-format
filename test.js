@@ -17,18 +17,44 @@
 var test = require('test-kit').tape()
 var format = require('.')
 
-test('basic format', function (t) {
+test('basic', function (t) {
     t.table_assert([
         [ 'v',    'opt',  'exp' ],
         [ 'str',   {str_lim: 20},       'str' ],
         [ ['num'],   {str_lim: 20},       '[num]' ],
+        [ {},   {str_lim: 2},       '{}' ],
+        [ {},   {str_lim: 1},       {} ],
+        [ {a:{}},   {str_lim: 20},       '{a:{}}' ],
         [ {a:'num'},   {str_lim: 20},       '{a:num}' ],
-        [ {a:['num']},   {str_lim: 20},       '{a:[num]}' ],
-        [ {a:['num', 'b']},   {str_lim: 20},       '{a:[num,b]}' ],
-        [ {a:['num', 'b']},   {str_lim: 6},       { a: [ 'num', 'b' ] } ],
-        [ {a:['num', 'b']},   {str_lim: 7},       { a: '[num,b]' } ],
 
     ], format )
 })
 
+test('nested', function (t) {
+    t.table_assert([
+        [ 'v',    'opt',  'exp' ],
+        [ {a:['num']},   {str_lim: 20},       '{a:[num]}' ],
+        [ {a:['num', 'b']},   {str_lim: 20},     '{a:[num,b]}' ],
+        [ {a:['num', 'b']},   {str_lim: 6},       { a: [ 'num', 'b' ] } ],
+        [ {a:['num', 'b']},   {str_lim: 7},       { a: '[num,b]' } ],
 
+        [ [{a:['num', 'b']}],   {str_lim: 6},       [{ a: [ 'num', 'b' ] }] ],
+    ], format )
+})
+
+test('multi', function (t) {
+    t.table_assert([
+        [ 'v',    'opt',  'exp' ],
+        [ {$mul:['num']},   {str_lim: 20},       'num' ],
+        [ {$mul:['num', 'str']},   {str_lim: 20},       'num | str' ],
+        [ {$mul:['num', 'str']},   {str_lim: 4},       { $mul: [ 'num', 'str' ] } ],
+    ], format )
+})
+
+test('error', function (t) {
+    t.table_assert([
+        [ 'v',   'opt', 'exp' ],
+        [ 3,     null,  /unexpected type/ ],
+        [ [true],     null,  /unexpected type/ ],
+    ], format, {assert: 'throws'})
+})
