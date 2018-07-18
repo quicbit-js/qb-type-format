@@ -57,7 +57,10 @@ function format_obj (obj, opt) {
         var vals = []
         var all_str = true
         keys.forEach(function (k) {
-            var v = format_any(obj[k], opt)
+            var v = obj[k]
+            if (k[0] !== '$') {
+                v = format_any(obj[k], opt)
+            }
             if (typeof v !== 'string') {
                 all_str = false
             }
