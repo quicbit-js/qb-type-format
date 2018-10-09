@@ -58,3 +58,14 @@ test('error', function (t) {
         [ [true],     null,  /unexpected type/ ],
     ], format, {assert: 'throws'})
 })
+
+
+
+var obj = {
+    a: [ 'string', 'foo', { k: 'hi' } ],
+    b: 'item b',
+    c: { nested: 'object' }
+}
+
+console.log('Plain:', JSON.stringify(obj, null, '  '))
+console.log('Formatted:', JSON.stringify(format(obj), null, '  '))

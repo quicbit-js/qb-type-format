@@ -1,24 +1,29 @@
 # qb-type-format
 
 Function for converting type objects or portions of 
-type objects into more concise formats.
+type objects into concise strings.  The end result
+is still valid JSON, but with some objects converted
+to flat-strings.  
 
-     
+For example:
+
+    var format = require('qb-type-format')
+    
     var obj = {
-        a: [ 1, 2, 3, { k: 'hi' } ],
+        a: [ 'string', 'foo', { k: 'hi' } ],
         b: 'item b',
         c: { nested: 'object' }
     }
     
-As plain JSON:
+    console.log('Plain', JSON.stringify(obj, null, '  '))
+    console.log('Formatted', JSON.stringify(format(obj), null, '  '))
     
-    console.log(JSON.stringify(obj, null, '  '))
+Outputs:
     
-    {
+    Plain: {
       "a": [
-        1,
-        2,
-        3,
+        "string",
+        "foo",
         {
           "k": "hi"
         }
@@ -28,11 +33,11 @@ As plain JSON:
         "nested": "object"
       }
     }
-    
-As JSON that is pre-formatted (squish leaves into strings) 
-
-    var format = require('qb-type-format')
-    console.log(JSON.stringify(format(obj), null, '  '))
+    Formatted: {
+      "a": "[string,foo,{k:hi}]",
+      "b": "item b",
+      "c": "{nested:object}"
+    }
     
 # install
 

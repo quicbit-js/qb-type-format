@@ -30,7 +30,8 @@ function format_arr (a, sep, paren, opt) {
 }
 
 function format_any (v, opt) {
-    if (!opt || !opt.str_lim) { opt = {str_lim: 20} }
+    opt = opt || {}
+    if (!opt.str_lim) opt.str_lim = 20
 
     var type = typeof v
     if (type === 'string') {
