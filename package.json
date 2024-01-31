@@ -5,14 +5,19 @@
   "homepage": "https://github.com/quicbit-js/qb-type-format",
   "url": "https://github.com/quicbit-js/qb-type-format/issues",
   "email": "support@quicbit.com",
-  "repository": "quicbit-js/qb-type-format",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quicbit-js/qb-type-format.git"
+  },
   "devDependencies": {
     "tape": "^4.8.0",
     "test-kit": "^2.7.2"
   },
   "scripts": {
     "test": "tape test.js",
-    "cov": "tap --coverage-report=html test.js"
+    "cov": "tap --coverage-report=html test.js",
+    "preversion": "npm test",
+    "postversion": "git push && npm publish"
   },
   "keywords": [
     "fast",
